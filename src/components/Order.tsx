@@ -2,6 +2,7 @@ import {
   Box,
   Circle,
   HStack,
+  IPressableProps,
   Pressable,
   Text,
   useTheme,
@@ -21,7 +22,7 @@ export type OrderProps = {
   status: "open" | "closed";
 };
 
-type Props = {
+type Props = IPressableProps & {
   data: OrderProps;
 };
 
@@ -32,7 +33,7 @@ export function Order({ data, ...rest }: Props) {
     data.status === "open" ? colors.secondary[700] : colors.green[300];
 
   return (
-    <Pressable>
+    <Pressable {...rest}>
       <HStack
         bg="gray.600"
         mb={4}
