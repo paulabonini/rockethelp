@@ -38,7 +38,7 @@ export function Order({ data, ...rest }: Props) {
         bg="gray.600"
         mb={4}
         alignItems="center"
-        justifyContent="sapce-btween"
+        justifyContent="space-between"
         rounded="sm"
         overflow="hidden"
       >

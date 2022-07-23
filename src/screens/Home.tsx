@@ -18,7 +18,7 @@ import { Filter } from "../components/Filter";
 import { Order, OrderProps } from "../components/Order";
 import { ChatTeardropText, SignOut } from "phosphor-react-native";
 import Logo from "../assets/logo_secondary.svg";
-import { dateFormat } from "../utils/firstoreDateFromat";
+import { dateFormat } from "../utils/firestoreDateFormat";
 import { Loading } from "../components/Loading";
 
 export function Home() {
@@ -96,7 +96,7 @@ export function Home() {
           w="full"
           mt={8}
           mb={4}
-          justifyContent="space-btween"
+          justifyContent="space-between"
           alignItems="center"
         >
           <Heading color="gray.100">Solicitações</Heading>
@@ -112,7 +112,7 @@ export function Home() {
           />
           <Filter
             type="closed"
-            title="finalizado"
+            title="finalizados"
             onPress={() => setStatusSelected("closed")}
             isActive={statusSelected === "closed"}
           />

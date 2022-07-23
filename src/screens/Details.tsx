@@ -1,24 +1,26 @@
 import { useEffect, useState } from "react";
+import { Alert } from "react-native";
+import { VStack, Text, HStack, useTheme, ScrollView, Box } from "native-base";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import firestore from "@react-native-firebase/firestore";
-import { dateFormat } from "../utils/firstoreDateFromat";
-import { HStack, Text, VStack, useTheme, ScrollView, Box } from "native-base";
-import { Header } from "../components/Header";
-import { OrderProps } from "../components/Order";
 import { OrderFirestoreDTO } from "../DTOs/OrderFirestoreDTO";
-import { Loading } from "../components/Loading";
-import { CardDetails } from "../components/CardDetails";
 import {
   CircleWavyCheck,
   Hourglass,
   DesktopTower,
-  Clipboard,
+  ClipboardText,
 } from "phosphor-react-native";
+
+import { dateFormat } from "../utils/firestoreDateFormat";
+
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
-import { Alert } from "react-native";
+import { Header } from "../components/Header";
+import { OrderProps } from "../components/Order";
+import { Loading } from "../components/Loading";
+import { CardDetails } from "../components/CardDetails";
 
-type RoutesParams = {
+type RouteParams = {
   orderId: string;
 };
 
@@ -29,23 +31,24 @@ type OrderDetails = OrderProps & {
 };
 
 export function Details() {
-  const [isLoading, setIsLoading] = useState(true);
   const [solution, setSolution] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [order, setOrder] = useState<OrderDetails>({} as OrderDetails);
 
-  const { colors } = useTheme();
   const navigation = useNavigation();
-
   const route = useRoute();
-  const { orderId } = route.params as RoutesParams;
+  const { colors } = useTheme();
+
+  const { orderId } = route.params as RouteParams;
 
   function handleOrderClose() {
     if (!solution) {
       return Alert.alert(
         "Solicitação",
-        "Informe solução para encerrar a solicitação."
+        "Informe a solução para encerrar a solicitação."
       );
     }
+
     firestore()
       .collection<OrderFirestoreDTO>("orders")
       .doc(orderId)
@@ -122,26 +125,28 @@ export function Details() {
           ml={2}
           textTransform="uppercase"
         >
-          {order.status === "closed" ? "Finalizado" : "Em andamento"}
+          {order.status === "closed" ? "finalizado" : "em andamento"}
         </Text>
       </HStack>
+
       <ScrollView mx={5} showsVerticalScrollIndicator={false}>
         <CardDetails
           title="equipamento"
           description={`Patrimônio ${order.patrimony}`}
           icon={DesktopTower}
-          footer={order.when}
         />
+
         <CardDetails
           title="descrição do problema"
           description={order.description}
-          icon={Clipboard}
+          icon={ClipboardText}
+          footer={`Registrado em ${order.when}`}
         />
 
         <CardDetails
           title="solução"
           icon={CircleWavyCheck}
-          description={order.description}
+          description={order.solution}
           footer={order.closed && `Encerrado em ${order.closed}`}
         >
           {order.status === "open" && (
